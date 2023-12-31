@@ -2,7 +2,7 @@ import './AppBoardElement.css';
 import { AppBoardSelectionElement } from './AppBoardSelectionElement.ts';
 import { AppSnapRule } from './AppSnapRule.ts';
 import { AppTileElement } from './AppTileElement.ts';
-import { SnapResult, combineSnaps, gridSnap } from './snapping.ts';
+import { SnapResult, combineSnaps, gridSnap, segmentSnap } from './snapping.ts';
 import { assert, overlap } from './utils.ts';
 
 export class AppBoardElement extends HTMLElement {
@@ -104,19 +104,39 @@ export class AppBoardElement extends HTMLElement {
     else this.setGrid(x, y);
   }
 
-  snapX(x: number, width: number): SnapResult {
+  getSnappable(): DOMRect[] {
+    const res: DOMRect[] = [];
+    for (const node of this.children) {
+      if (
+        node instanceof AppTileElement &&
+        !node.isSelected() &&
+        node !== this.dragTarget
+      ) {
+        res.push(node.getBoundingClientRect());
+      }
+    }
+    return res;
+  }
+
+  snapX(enabled: boolean, x: number, width: number): SnapResult {
+    if (!enabled) return { result: x };
     const grid = this.getGrid();
+    const snappable = this.getSnappable();
     return combineSnaps(
       x,
-      grid !== null ? gridSnap(x, width, grid.x, 5) : undefined
+      grid !== null ? gridSnap(x, width, grid.x, 5) : undefined,
+      ...snappable.map((r) => segmentSnap(x, width, r.x, r.width, 5))
     );
   }
 
-  snapY(y: number, height: number): SnapResult {
+  snapY(enabled: boolean, y: number, height: number): SnapResult {
+    if (!enabled) return { result: y };
     const grid = this.getGrid();
+    const snappable = this.getSnappable();
     return combineSnaps(
       y,
-      grid !== null ? gridSnap(y, height, grid.x, 5) : undefined
+      grid !== null ? gridSnap(y, height, grid.y, 5) : undefined,
+      ...snappable.map((r) => segmentSnap(y, height, r.y, r.height, 5))
     );
   }
 
@@ -150,21 +170,37 @@ export class AppBoardElement extends HTMLElement {
 
   onMouseMove(e: MouseEvent): void {
     if (this.dragTarget !== null) {
+      const isSelected = this.dragTarget.isSelected();
+      if (!isSelected) {
+        // need to do this first because it affects snapping
+        this.updateSelection(null);
+      }
+
+      const snapEnabled = !e.shiftKey;
       const { width, height } = this.dragTarget.getBoundingClientRect();
-      const snapX = this.snapX(e.clientX + this.dragOffsetX, width);
-      const snapY = this.snapY(e.clientY + this.dragOffsetY, height);
+      const snapX = this.snapX(
+        snapEnabled,
+        e.clientX + this.dragOffsetX,
+        width
+      );
+      const snapY = this.snapY(
+        snapEnabled,
+        e.clientY + this.dragOffsetY,
+        height
+      );
       this.updateSnapRules(snapX.reference ?? null, snapY.reference ?? null);
-      if (this.dragTarget.isSelected()) {
+
+      if (isSelected) {
         const moveX = snapX.result - this.dragTarget.x;
         const moveY = snapY.result - this.dragTarget.y;
         for (const tile of this.selectedTiles) {
           tile.moveBy(moveX, moveY);
         }
       } else {
-        this.updateSelection(null);
         this.dragTarget.moveTo(snapX.result, snapY.result);
       }
     }
+
     if (this.selectionArea !== null) {
       this.selectionArea.endAt(e.clientX, e.clientY);
     }

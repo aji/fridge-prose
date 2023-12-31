@@ -4,6 +4,18 @@ export type SnapResult = {
   reference?: number;
 };
 
+function snapIf(
+  pos: number,
+  moving: number,
+  ref: number,
+  margin: number
+): SnapResult | undefined {
+  const dist = ref - moving;
+  return Math.abs(dist) < margin
+    ? { result: pos + dist, distance: Math.abs(dist), reference: ref }
+    : undefined;
+}
+
 export function gridSnap(
   pos: number,
   size: number,
@@ -16,18 +28,35 @@ export function gridSnap(
   const rx0 = Math.round(x0 / grid) * grid;
   const rx1 = Math.round(x1 / grid) * grid;
 
-  if (Math.abs(x0 - rx0) <= margin)
-    return { result: rx0, distance: Math.abs(x0 - rx0), reference: rx0 };
-  if (Math.abs(x1 - rx1) <= margin)
-    return { result: rx1 - size, distance: Math.abs(x1 - rx1), reference: rx1 };
-
-  return { result: x0 };
+  return combineSnapsMaybe(
+    snapIf(x0, x0, rx0, margin),
+    snapIf(x0, x1, rx1, margin)
+  );
 }
 
-export function combineSnaps(
+export function segmentSnap(
   pos: number,
+  size: number,
+  snapPos: number,
+  snapSize: number,
+  margin: number
+): SnapResult | undefined {
+  const x0 = pos;
+  const x1 = pos + size;
+  const a0 = snapPos;
+  const a1 = snapPos + snapSize;
+
+  return combineSnapsMaybe(
+    snapIf(x0, x0, a0, margin),
+    snapIf(x0, x1, a0, margin),
+    snapIf(x0, x0, a1, margin),
+    snapIf(x0, x1, a1, margin)
+  );
+}
+
+export function combineSnapsMaybe(
   ...snaps: (SnapResult | undefined)[]
-): SnapResult {
+): SnapResult | undefined {
   let winner: SnapResult | undefined = undefined;
 
   for (const snap of snaps) {
@@ -42,5 +71,12 @@ export function combineSnaps(
     }
   }
 
-  return winner ?? { result: pos };
+  return winner;
+}
+
+export function combineSnaps(
+  pos: number,
+  ...snaps: (SnapResult | undefined)[]
+): SnapResult {
+  return combineSnapsMaybe(...snaps) ?? { result: pos };
 }
