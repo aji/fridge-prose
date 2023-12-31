@@ -1,6 +1,7 @@
 import { AppDrawerElement } from './AppDrawerElement.ts';
 import { AppTileElement } from './AppTileElement.ts';
 import { assert, para } from './utils.ts';
+import './AppDrawerOptionsElement.css';
 
 const maxOptions = 50;
 

@@ -1,5 +1,6 @@
 import { assert } from './utils.ts';
 import { AppTileElement } from './AppTileElement.ts';
+import './AppBoardElement.css';
 
 export class AppBoardElement extends HTMLElement {
   static name = 'app-board';

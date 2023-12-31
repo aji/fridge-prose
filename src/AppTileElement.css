@@ -1,0 +1,21 @@
+app-tile {
+  border-style: solid;
+  border-width: 1px 4px 4px 1px;
+  border-radius: 4px;
+  padding: 0.5rem;
+  cursor: grab;
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: light) {
+  app-tile {
+    background-color: #fff;
+    border-color: #000;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  app-tile {
+    background-color: #000;
+    border-color: #666;
+  }
+}

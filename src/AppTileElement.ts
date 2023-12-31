@@ -1,4 +1,5 @@
 import { assert } from './utils.ts';
+import './AppTileElement.css';
 
 export class AppTileElement extends HTMLElement {
   static name = 'app-tile';

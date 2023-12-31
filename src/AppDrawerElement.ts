@@ -2,6 +2,7 @@ import { AppBoardElement } from './AppBoardElement.ts';
 import { AppDrawerOptionsElement } from './AppDrawerOptionsElement.ts';
 import { search } from './search.ts';
 import { assert } from './utils.ts';
+import './AppDrawerElement.css';
 
 export class AppDrawerElement extends HTMLElement {
   static name = 'app-drawer';

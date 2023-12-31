@@ -3,6 +3,7 @@ import { AppBoardSelectionElement } from './AppBoardSelectionElement.ts';
 import { AppDrawerElement } from './AppDrawerElement.ts';
 import { AppDrawerOptionsElement } from './AppDrawerOptionsElement.ts';
 import { AppTileElement } from './AppTileElement.ts';
+import './index.css';
 
 AppBoardElement.register();
 AppBoardSelectionElement.register();
