@@ -10,3 +10,7 @@ app-board {
 app-board app-tile {
   position: fixed;
 }
+app-board.grid {
+  background-image: linear-gradient(to right, #88888822 1px, transparent 1px),
+    linear-gradient(to bottom, #88888822 1px, transparent 1px);
+}

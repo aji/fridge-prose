@@ -19,6 +19,7 @@ export class AppDrawerElement extends HTMLElement {
     this.input.addEventListener('focus', this.onInputFocus.bind(this));
     this.input.addEventListener('blur', this.onInputBlur.bind(this));
     this.input.addEventListener('input', this.onInput.bind(this));
+    this.input.addEventListener('keydown', this.onInputKeydown.bind(this));
 
     this.options = document.createElement('app-drawer-options');
     this.appendChild(this.options);
@@ -92,13 +93,17 @@ export class AppDrawerElement extends HTMLElement {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.key === '/' && e.target !== this.input) {
+    if (e.key === '/') {
       e.preventDefault();
       this.startInput();
     }
-    if (e.key === 'Escape' && e.target === this.input) {
+  }
+
+  onInputKeydown(e: KeyboardEvent): void {
+    if (e.key === 'Escape') {
       this.endInput();
     }
+    e.stopPropagation();
   }
 
   onInput(e: Event): void {

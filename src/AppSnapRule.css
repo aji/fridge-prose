@@ -1,0 +1,18 @@
+app-snap-rule {
+  position: fixed;
+  border: 1px solid #f0f;
+}
+
+app-snap-rule.horizontal {
+  border-width: 1px 0 0 0;
+  height: 1px;
+  left: 0;
+  right: 0;
+}
+
+app-snap-rule.vertical {
+  border-width: 0 0 0 1px;
+  width: 1px;
+  top: 0;
+  bottom: 0;
+}
