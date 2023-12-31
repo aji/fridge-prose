@@ -1,6 +1,7 @@
-import { assert } from './utils.ts';
+import { assert, overlap } from './utils.ts';
 import { AppTileElement } from './AppTileElement.ts';
 import './AppBoardElement.css';
+import { AppBoardSelectionElement } from './AppBoardSelectionElement.ts';
 
 export class AppBoardElement extends HTMLElement {
   static name = 'app-board';
@@ -9,6 +10,9 @@ export class AppBoardElement extends HTMLElement {
   dragOffsetX: number;
   dragOffsetY: number;
 
+  selectionArea: AppBoardSelectionElement | null;
+  selectedTiles: AppTileElement[];
+
   constructor() {
     super();
 
@@ -16,8 +20,10 @@ export class AppBoardElement extends HTMLElement {
     this.dragOffsetX = 0;
     this.dragOffsetY = 0;
 
+    this.selectionArea = null;
+    this.selectedTiles = [];
+
     this.addEventListener('mousedown', this.onMouseDown.bind(this));
-    this.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
@@ -44,44 +50,37 @@ export class AppBoardElement extends HTMLElement {
     elem.dragStart();
   }
 
-  arrangeTiles(): void {
-    const gap = 5;
-    const { width } = this.getBoundingClientRect();
-
-    let curX = gap;
-    let curY = gap;
-    let colSize = 0;
-
-    for (const node of this.children) {
-      if (!(node instanceof AppTileElement)) {
-        continue;
+  updateSelection(rect: DOMRect | null): void {
+    this.selectedTiles = [];
+    for (const child of this.children) {
+      if (child instanceof AppTileElement) {
+        const selected =
+          rect !== null && overlap(rect, child.getBoundingClientRect());
+        child.setIsSelected(selected);
+        if (selected) this.selectedTiles.push(child);
       }
-
-      const rect = node.getBoundingClientRect();
-
-      if (width < curX + rect.width) {
-        curX = gap;
-        curY = curY + colSize + gap;
-        colSize = 0;
-      }
-
-      node.moveTo(curX, curY);
-      curX += rect.width + gap;
-      colSize = Math.max(colSize, rect.height);
     }
   }
 
   onMouseMove(e: MouseEvent): void {
     if (this.dragTarget !== null) {
-      this.dragTarget.moveTo(
-        e.clientX + this.dragOffsetX,
-        e.clientY + this.dragOffsetY
-      );
+      const moveX = e.clientX + this.dragOffsetX - this.dragTarget.x;
+      const moveY = e.clientY + this.dragOffsetY - this.dragTarget.y;
+      if (this.dragTarget.isSelected()) {
+        for (const tile of this.selectedTiles) {
+          tile.moveBy(moveX, moveY);
+        }
+      } else {
+        this.updateSelection(null);
+        this.dragTarget.moveBy(moveX, moveY);
+      }
+    }
+    if (this.selectionArea !== null) {
+      this.selectionArea.endAt(e.clientX, e.clientY);
     }
   }
 
   onMouseDown(e: MouseEvent): void {
-    console.log(e.target);
     if (e.target instanceof AppTileElement) {
       this.dragTarget = e.target;
       this.dragOffsetX = e.target.x - e.clientX;
@@ -90,16 +89,23 @@ export class AppBoardElement extends HTMLElement {
       e.target.raiseToTop();
       e.preventDefault();
     }
+    if (e.target === this && this.selectionArea === null) {
+      this.selectionArea = AppBoardSelectionElement.create();
+      this.appendChild(this.selectionArea);
+      this.selectionArea.startAt(e.clientX, e.clientY);
+      e.preventDefault();
+    }
   }
 
   onMouseUp(): void {
-    this.dragTarget?.dragEnd();
-    this.dragTarget = null;
-  }
-
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.key === 'r') {
-      this.arrangeTiles();
+    if (this.dragTarget !== null) {
+      this.dragTarget.dragEnd();
+      this.dragTarget = null;
+    }
+    if (this.selectionArea !== null) {
+      this.updateSelection(this.selectionArea.getBoundingClientRect());
+      this.removeChild(this.selectionArea);
+      this.selectionArea = null;
     }
   }
 }

@@ -24,6 +24,15 @@ export class AppTileElement extends HTMLElement {
     return elem;
   }
 
+  setIsSelected(selected: boolean): void {
+    if (selected) this.setAttribute('data-selected', 'true');
+    else this.removeAttribute('data-selected');
+  }
+
+  isSelected(): boolean {
+    return this.getAttribute('data-selected') === 'true';
+  }
+
   dragStart() {
     this.style.cursor = 'grabbing';
   }
@@ -37,6 +46,10 @@ export class AppTileElement extends HTMLElement {
     this.style.top = `${y}px`;
     this.x = x;
     this.y = y;
+  }
+
+  moveBy(dx: number, dy: number) {
+    this.moveTo(this.x + dx, this.y + dy);
   }
 
   raiseToTop() {

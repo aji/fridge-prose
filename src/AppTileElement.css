@@ -12,10 +12,18 @@ app-tile {
     background-color: #fff;
     border-color: #000;
   }
+  app-tile[data-selected='true'] {
+    background-color: #def;
+    border-color: #08f;
+  }
 }
 @media (prefers-color-scheme: dark) {
   app-tile {
     background-color: #000;
     border-color: #666;
+  }
+  app-tile[data-selected='true'] {
+    background-color: #123;
+    border-color: #08f;
   }
 }
