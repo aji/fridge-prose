@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fridge Prose</title>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+        font-size: 20px;
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      app-board {
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 0;
+      }
+      app-tile {
+        border-style: solid;
+        border-width: 1px 4px 4px 1px;
+        border-radius: 4px;
+        padding: 0.5rem;
+        cursor: grab;
+        white-space: nowrap;
+      }
+      app-board app-tile {
+        position: fixed;
+      }
+      app-drawer {
+        position: fixed;
+        bottom: 0.5rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        z-index: 1;
+      }
+      app-drawer input {
+        flex-grow: 1;
+        font-family: sans-serif;
+        font-size: 20px;
+        border-style: solid;
+        border-width: 1px 4px 4px 1px;
+        border-radius: 4px;
+        padding: 0.5rem;
+      }
+      app-drawer-options {
+        position: fixed;
+        bottom: 4rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+      }
+      app-drawer-options p {
+        font-size: 16px;
+        font-style: italic;
+        margin: 0.5rem;
+      }
+      @media (prefers-color-scheme: light) {
+        body {
+          background-color: #fff;
+          color: #000;
+        }
+        app-tile {
+          background-color: #fff;
+          border-color: #000;
+        }
+        app-drawer input {
+          background-color: #fff;
+          border-color: #000;
+        }
+        app-drawer-options {
+          background-color: #ddd;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #000;
+          color: #fff;
+        }
+        app-tile {
+          background-color: #000;
+          border-color: #666;
+        }
+        app-drawer input {
+          background-color: #000;
+          color: #fff;
+          border-color: #666;
+        }
+        app-drawer-options {
+          background-color: #222;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-lTXavunG.js"></script>
+  </head>
+  <body>
+    <app-board id="board"></app-board>
+    <app-drawer board="board"></app-drawer>
+  </body>
+</html>
