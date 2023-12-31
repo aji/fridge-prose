@@ -22,6 +22,5 @@ export class AppSnapRule extends HTMLElement {
     this.className = variant;
     this.style.top = variant === 'horizontal' ? `${pos}px` : '';
     this.style.left = variant === 'vertical' ? `${pos}px` : '';
-    console.log(this.getBoundingClientRect());
   }
 }

@@ -5,6 +5,10 @@ import { AppTileElement } from './AppTileElement.ts';
 import { SnapResult, combineSnaps, gridSnap, segmentSnap } from './snapping.ts';
 import { assert, overlap } from './utils.ts';
 
+const gridSize = 100;
+const snapMargin = 5;
+const nudgeBy = 5;
+
 export class AppBoardElement extends HTMLElement {
   static name = 'app-board';
 
@@ -124,8 +128,8 @@ export class AppBoardElement extends HTMLElement {
     const snappable = this.getSnappable();
     return combineSnaps(
       x,
-      grid !== null ? gridSnap(x, width, grid.x, 5) : undefined,
-      ...snappable.map((r) => segmentSnap(x, width, r.x, r.width, 5))
+      grid !== null ? gridSnap(x, width, grid.x, snapMargin) : undefined,
+      ...snappable.map((r) => segmentSnap(x, width, r.x, r.width, snapMargin))
     );
   }
 
@@ -135,8 +139,8 @@ export class AppBoardElement extends HTMLElement {
     const snappable = this.getSnappable();
     return combineSnaps(
       y,
-      grid !== null ? gridSnap(y, height, grid.y, 5) : undefined,
-      ...snappable.map((r) => segmentSnap(y, height, r.y, r.height, 5))
+      grid !== null ? gridSnap(y, height, grid.y, snapMargin) : undefined,
+      ...snappable.map((r) => segmentSnap(y, height, r.y, r.height, snapMargin))
     );
   }
 
@@ -237,9 +241,16 @@ export class AppBoardElement extends HTMLElement {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    console.log(e);
     if (e.key === 'g') {
-      this.toggleGrid(100, 100);
+      this.toggleGrid(gridSize, gridSize);
+    } else if (e.key === 'ArrowLeft') {
+      this.selectedTiles.forEach((x) => x.moveBy(-nudgeBy, 0));
+    } else if (e.key === 'ArrowRight') {
+      this.selectedTiles.forEach((x) => x.moveBy(nudgeBy, 0));
+    } else if (e.key === 'ArrowUp') {
+      this.selectedTiles.forEach((x) => x.moveBy(0, -nudgeBy));
+    } else if (e.key === 'ArrowDown') {
+      this.selectedTiles.forEach((x) => x.moveBy(0, nudgeBy));
     }
   }
 }
