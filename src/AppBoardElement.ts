@@ -243,6 +243,9 @@ export class AppBoardElement extends HTMLElement {
   onKeyDown(e: KeyboardEvent): void {
     if (e.key === 'g') {
       this.toggleGrid(gridSize, gridSize);
+    } else if (e.key === 'Delete' || e.key === 'Backspace') {
+      this.selectedTiles.forEach((x) => x.remove());
+      this.updateSelection(null);
     } else if (e.key === 'ArrowLeft') {
       this.selectedTiles.forEach((x) => x.moveBy(-nudgeBy, 0));
     } else if (e.key === 'ArrowRight') {
