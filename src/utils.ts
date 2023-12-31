@@ -16,3 +16,9 @@ export function expected<T>(
   assert(value !== undefined && value !== null, msg);
   return value;
 }
+
+export function para(text: string): HTMLParagraphElement {
+  const p = document.createElement('p');
+  p.innerText = text;
+  return p;
+}
