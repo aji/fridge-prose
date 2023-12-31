@@ -2,13 +2,22 @@ import { AppDrawerElement } from './AppDrawerElement.ts';
 import { AppTileElement } from './AppTileElement.ts';
 import { assert, para } from './utils.ts';
 
-export const maxOptions = 50;
+const maxOptions = 50;
 
 export class AppDrawerOptionsElement extends HTMLElement {
+  static name = 'app-drawer-options';
+
   constructor() {
     super();
     this.addEventListener('mousedown', this.onMouseDown.bind(this));
     this.style.display = 'none';
+  }
+
+  static register(): void {
+    customElements.define(
+      AppDrawerOptionsElement.name,
+      AppDrawerOptionsElement
+    );
   }
 
   open(): void {
@@ -31,6 +40,9 @@ export class AppDrawerOptionsElement extends HTMLElement {
       const extra = options.length - maxOptions;
       const counter = extra === 1 ? 'additional option' : 'additional options';
       this.appendChild(para(`Plus ${extra} ${counter}`));
+    }
+    if (options.length === 0) {
+      this.appendChild(para('No results'));
     }
   }
 

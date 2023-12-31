@@ -1,6 +1,8 @@
 import { assert } from './utils.ts';
 
 export class AppTileElement extends HTMLElement {
+  static name = 'app-tile';
+
   x: number;
   y: number;
 
@@ -10,8 +12,12 @@ export class AppTileElement extends HTMLElement {
     this.y = 0;
   }
 
+  static register(): void {
+    customElements.define(AppTileElement.name, AppTileElement);
+  }
+
   static create(phrase: string): AppTileElement {
-    const elem = document.createElement('app-tile');
+    const elem = document.createElement(AppTileElement.name);
     assert(elem instanceof AppTileElement);
     elem.innerText = phrase;
     return elem;

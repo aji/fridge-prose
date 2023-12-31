@@ -2,6 +2,8 @@ import { assert } from './utils.ts';
 import { AppTileElement } from './AppTileElement.ts';
 
 export class AppBoardElement extends HTMLElement {
+  static name = 'app-board';
+
   dragTarget: AppTileElement | null;
   dragOffsetX: number;
   dragOffsetY: number;
@@ -17,6 +19,10 @@ export class AppBoardElement extends HTMLElement {
     this.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
+  }
+
+  static register(): void {
+    customElements.define(AppBoardElement.name, AppBoardElement);
   }
 
   createTile(message: string): AppTileElement {

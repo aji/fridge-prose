@@ -4,6 +4,8 @@ import { search } from './search.ts';
 import { assert } from './utils.ts';
 
 export class AppDrawerElement extends HTMLElement {
+  static name = 'app-drawer';
+
   board: AppBoardElement | undefined;
   options: HTMLElement;
   input: HTMLInputElement;
@@ -26,6 +28,10 @@ export class AppDrawerElement extends HTMLElement {
     }
 
     document.addEventListener('keydown', this.onKeyDown.bind(this));
+  }
+
+  static register(): void {
+    customElements.define(AppDrawerElement.name, AppDrawerElement);
   }
 
   boardChanged(next: string) {
