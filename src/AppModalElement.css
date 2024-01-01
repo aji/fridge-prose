@@ -1,4 +1,4 @@
-app-welcome {
+app-modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -8,9 +8,10 @@ app-welcome {
   justify-content: center;
   align-items: center;
   z-index: 2;
+  background-color: var(--color-modal-haze);
 }
 
-app-welcome > div {
+app-modal > div {
   max-width: 30rem;
   padding: 3rem;
   margin: 3rem;

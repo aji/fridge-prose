@@ -3,12 +3,14 @@ body {
   --color-border: #000;
   --color-grid: #ddd;
   --color-background: #fff;
+  --color-modal-haze: rgba(255, 255, 255, 0.5);
   --color-tile-bg: #fff;
   --color-drawer-bg: #ddd;
   --color-selection-bg: #def;
   --color-selection-fg: #08f;
   --color-link: #03f;
   --color-link-visited: #127;
+  --color-snap-rule: #f0f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,7 +32,6 @@ body {
   right: 0;
   background-color: var(--color-background);
   color: var(--color-primary);
-  --color-snap-rule: #f0f;
 }
 
 a {

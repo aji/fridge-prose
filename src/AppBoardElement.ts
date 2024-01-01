@@ -223,6 +223,9 @@ export class AppBoardElement extends HTMLElement {
       this.selectionArea = AppBoardSelectionElement.create();
       this.appendChild(this.selectionArea);
       this.selectionArea.startAt(e.clientX, e.clientY);
+      if (document.activeElement instanceof HTMLInputElement) {
+        document.activeElement.blur();
+      }
       e.preventDefault();
     }
   }

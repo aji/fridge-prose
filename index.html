@@ -8,8 +8,11 @@
   </head>
   <body>
     <app-board id="board"></app-board>
+    <app-menu>
+      <button data-action="modal" data-target="about">About</button>
+    </app-menu>
     <app-drawer board="board"></app-drawer>
-    <app-welcome>
+    <app-modal id="about">
       <div>
         <h1>Fridge Prose</h1>
         <p>
@@ -28,6 +31,6 @@
           holding <kbd>Shift</kbd> to disable snapping.
         </p>
       </div>
-    </app-welcome>
+    </app-modal>
   </body>
 </html>
