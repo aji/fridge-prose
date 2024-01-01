@@ -11,6 +11,10 @@ app-modal {
   background-color: var(--color-modal-haze);
 }
 
+app-modal.hidden {
+  display: none;
+}
+
 app-modal > div {
   max-width: 30rem;
   padding: 3rem;

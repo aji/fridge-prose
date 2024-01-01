@@ -9,6 +9,11 @@ const gridSize = 100;
 const snapMargin = 5;
 const nudgeBy = 5;
 
+type Serialized = {
+  v: 1;
+  tiles: [number, number, string][];
+};
+
 export class AppBoard extends HTMLElement {
   static name = 'app-board';
 
@@ -49,10 +54,41 @@ export class AppBoard extends HTMLElement {
     customElements.define(AppBoard.name, AppBoard);
   }
 
+  saveTo(): string {
+    const data: Serialized = { v: 1, tiles: [] };
+    for (const child of this.children) {
+      if (child instanceof AppTile) {
+        data.tiles.push([child.x, child.y, child.innerText]);
+      }
+    }
+    return JSON.stringify(data);
+  }
+
+  loadFrom(serialized: string): void {
+    const data: Serialized = JSON.parse(serialized);
+    this.removeAllTiles();
+    for (const [x, y, phrase] of data.tiles) {
+      const tile = this.createTile(phrase);
+      tile.moveTo(x, y);
+    }
+  }
+
   createTile(message: string): AppTile {
     const elem = AppTile.create(message);
     this.appendChild(elem);
     return elem;
+  }
+
+  removeAllTiles(): void {
+    const toRemove = [];
+    for (const child of this.children) {
+      if (child instanceof AppTile) {
+        toRemove.push(child);
+      }
+    }
+    for (const node of toRemove) {
+      node.remove();
+    }
   }
 
   adoptTile(e: MouseEvent): void {

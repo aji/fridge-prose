@@ -1,13 +1,12 @@
 import { AppBoard } from './AppBoard.ts';
 import { AppDrawerOptionsElement } from './AppDrawerOptions.ts';
 import { search } from './search.ts';
-import { assert } from './utils.ts';
+import { assert, expected } from './utils.ts';
 import './AppDrawer.css';
 
 export class AppDrawer extends HTMLElement {
   static name = 'app-drawer';
 
-  board: AppBoard | undefined;
   options: HTMLElement;
   input: HTMLInputElement;
 
@@ -24,11 +23,6 @@ export class AppDrawer extends HTMLElement {
     this.options = document.createElement('app-drawer-options');
     this.appendChild(this.options);
 
-    const boardAttr = this.getAttribute('board');
-    if (boardAttr) {
-      this.boardChanged(boardAttr);
-    }
-
     document.addEventListener('keydown', this.onKeyDown.bind(this));
   }
 
@@ -36,25 +30,17 @@ export class AppDrawer extends HTMLElement {
     customElements.define(AppDrawer.name, AppDrawer);
   }
 
-  boardChanged(next: string) {
-    const elem = document.getElementById(next);
-    assert(elem !== null && elem instanceof AppBoard);
-    this.board = elem;
+  board(): AppBoard {
+    const board = expected(this.getAttribute('board'));
+    const elem = expected(document.getElementById(board));
+    assert(elem instanceof AppBoard);
+    return elem;
   }
 
   adoptTile(e: MouseEvent) {
     assert(this.board !== undefined);
-    this.board.adoptTile(e);
+    this.board().adoptTile(e);
     this.endInput();
-  }
-
-  attributeChangedCallback(name: string, _prev: string, next: string) {
-    switch (name) {
-      case 'board': {
-        this.boardChanged(next);
-        break;
-      }
-    }
   }
 
   startInput(): void {

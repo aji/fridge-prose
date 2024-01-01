@@ -14,11 +14,11 @@ export class AppModal extends HTMLElement {
   }
 
   show(): void {
-    this.style.display = '';
+    this.classList.remove('hidden');
   }
 
   hide(): void {
-    this.style.display = 'none';
+    this.classList.add('hidden');
   }
 
   onMouseDown(e: MouseEvent): void {
