@@ -2,6 +2,7 @@ import './AppBoard.css';
 import { AppBoardSelection } from './AppBoardSelection.ts';
 import { AppSnapRule } from './AppSnapRule.ts';
 import { AppTile } from './AppTile.ts';
+import { sample } from './search.ts';
 import { SnapResult, combineSnaps, gridSnap, segmentSnap } from './snapping.ts';
 import { assert, overlap } from './utils.ts';
 
@@ -49,6 +50,7 @@ export class AppBoard extends HTMLElement {
     this.snapRuleY = null;
 
     this.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.addEventListener('dblclick', this.onDblClick.bind(this));
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
@@ -276,6 +278,12 @@ export class AppBoard extends HTMLElement {
       }
       e.preventDefault();
     }
+  }
+
+  onDblClick(e: MouseEvent): void {
+    const tile = this.createTile(sample());
+    const { width, height } = tile.getBoundingClientRect();
+    tile.moveTo(e.clientX - width / 2, e.clientY - height / 2);
   }
 
   onMouseUp(): void {
