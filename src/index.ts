@@ -4,6 +4,7 @@ import { AppDrawerElement } from './AppDrawerElement.ts';
 import { AppDrawerOptionsElement } from './AppDrawerOptionsElement.ts';
 import { AppSnapRule } from './AppSnapRule.ts';
 import { AppTileElement } from './AppTileElement.ts';
+import { AppWelcomeElement } from './AppWelcomeElement.ts';
 import './index.css';
 
 AppBoardElement.register();
@@ -12,3 +13,4 @@ AppDrawerElement.register();
 AppDrawerOptionsElement.register();
 AppSnapRule.register();
 AppTileElement.register();
+AppWelcomeElement.register();

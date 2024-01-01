@@ -9,5 +9,25 @@
   <body>
     <app-board id="board"></app-board>
     <app-drawer board="board"></app-drawer>
+    <app-welcome>
+      <div>
+        <h1>Fridge Prose</h1>
+        <p>
+          This is a silly little toy that turns the
+          <a href="https://github.com/orgtre/top-open-subtitles-sentences"
+            >Top OpenSubtitles Sentences</a
+          >
+          dataset into "fridge magnets". There's only 10,000 tiles to choose
+          from, which sounds like more than it is!
+        </p>
+        <p>
+          Use the input at the bottom to search for tiles, then drag them into
+          the area above to arrange them into your masterpiece. A grid for
+          snapping can be toggled with <kbd>G</kbd>. Selected tiles can be
+          deleted with <kbd>Backspace</kbd> or <kbd>Delete</kbd>. Drag while
+          holding <kbd>Shift</kbd> to disable snapping.
+        </p>
+      </div>
+    </app-welcome>
   </body>
 </html>

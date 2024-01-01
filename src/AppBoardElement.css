@@ -6,11 +6,20 @@ app-board {
   left: 0;
   right: 0;
   z-index: 0;
+  background-color: var(--color-background);
 }
 app-board app-tile {
   position: fixed;
 }
 app-board.grid {
-  background-image: linear-gradient(to right, #88888822 1px, transparent 1px),
-    linear-gradient(to bottom, #88888822 1px, transparent 1px);
+  background-image: linear-gradient(
+      to right,
+      var(--color-grid) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-grid) 1px,
+      var(--color-background) 1px
+    );
 }

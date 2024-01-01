@@ -7,23 +7,11 @@ app-tile {
   white-space: nowrap;
 }
 
-@media (prefers-color-scheme: light) {
-  app-tile {
-    background-color: #fff;
-    border-color: #000;
-  }
-  app-tile[data-selected='true'] {
-    background-color: #def;
-    border-color: #08f;
-  }
+app-tile {
+  background-color: var(--color-tile-bg);
+  border-color: var(--color-border);
 }
-@media (prefers-color-scheme: dark) {
-  app-tile {
-    background-color: #000;
-    border-color: #666;
-  }
-  app-tile[data-selected='true'] {
-    background-color: #123;
-    border-color: #08f;
-  }
+app-tile[data-selected='true'] {
+  background-color: var(--color-selection-bg);
+  border-color: var(--color-selection-fg);
 }

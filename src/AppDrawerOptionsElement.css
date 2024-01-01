@@ -10,20 +10,10 @@ app-drawer-options {
   gap: 0.5rem;
   padding: 0.5rem;
   border-radius: 4px;
+  background-color: var(--color-drawer-bg);
 }
 app-drawer-options p {
   font-size: 16px;
   font-style: italic;
   margin: 0.5rem;
-}
-
-@media (prefers-color-scheme: light) {
-  app-drawer-options {
-    background-color: #ddd;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  app-drawer-options {
-    background-color: #222;
-  }
 }

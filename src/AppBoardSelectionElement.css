@@ -1,6 +1,7 @@
 app-board-selection {
   position: fixed;
   box-sizing: border-box;
-  border: 1px solid #08f;
-  background: #0088ff20;
+  border: 1px solid var(--color-selection-fg);
+  background: var(--color-selection-bg);
+  opacity: 50%;
 }

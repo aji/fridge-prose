@@ -14,18 +14,7 @@ app-drawer input {
   border-width: 1px 4px 4px 1px;
   border-radius: 4px;
   padding: 0.5rem;
-}
-
-@media (prefers-color-scheme: light) {
-  app-drawer input {
-    background-color: #fff;
-    border-color: #000;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  app-drawer input {
-    background-color: #000;
-    color: #fff;
-    border-color: #666;
-  }
+  background-color: var(--color-tile-bg);
+  border-color: var(--color-border);
+  color: var(--color-primary);
 }
