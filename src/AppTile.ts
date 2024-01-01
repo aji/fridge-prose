@@ -1,7 +1,7 @@
 import { assert } from './utils.ts';
-import './AppTileElement.css';
+import './AppTile.css';
 
-export class AppTileElement extends HTMLElement {
+export class AppTile extends HTMLElement {
   static name = 'app-tile';
 
   x: number;
@@ -14,12 +14,12 @@ export class AppTileElement extends HTMLElement {
   }
 
   static register(): void {
-    customElements.define(AppTileElement.name, AppTileElement);
+    customElements.define(AppTile.name, AppTile);
   }
 
-  static create(phrase: string): AppTileElement {
-    const elem = document.createElement(AppTileElement.name);
-    assert(elem instanceof AppTileElement);
+  static create(phrase: string): AppTile {
+    const elem = document.createElement(AppTile.name);
+    assert(elem instanceof AppTile);
     elem.innerText = phrase;
     return elem;
   }

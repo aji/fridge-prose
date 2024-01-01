@@ -1,7 +1,7 @@
 import { assert } from './utils.ts';
-import './AppBoardSelectionElement.css';
+import './AppBoardSelection.css';
 
-export class AppBoardSelectionElement extends HTMLElement {
+export class AppBoardSelection extends HTMLElement {
   static name = 'app-board-selection';
 
   x: number;
@@ -14,15 +14,12 @@ export class AppBoardSelectionElement extends HTMLElement {
   }
 
   static register(): void {
-    customElements.define(
-      AppBoardSelectionElement.name,
-      AppBoardSelectionElement
-    );
+    customElements.define(AppBoardSelection.name, AppBoardSelection);
   }
 
-  static create(): AppBoardSelectionElement {
-    const elem = document.createElement(AppBoardSelectionElement.name);
-    assert(elem instanceof AppBoardSelectionElement);
+  static create(): AppBoardSelection {
+    const elem = document.createElement(AppBoardSelection.name);
+    assert(elem instanceof AppBoardSelection);
     return elem;
   }
 

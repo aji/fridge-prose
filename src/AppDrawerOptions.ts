@@ -1,7 +1,7 @@
-import { AppDrawerElement } from './AppDrawerElement.ts';
-import { AppTileElement } from './AppTileElement.ts';
+import { AppDrawer } from './AppDrawer.ts';
+import { AppTile } from './AppTile.ts';
 import { assert, para } from './utils.ts';
-import './AppDrawerOptionsElement.css';
+import './AppDrawerOptions.css';
 
 const maxOptions = 50;
 
@@ -35,7 +35,7 @@ export class AppDrawerOptionsElement extends HTMLElement {
   setOptions(options: string[]): void {
     this.innerHTML = '';
     for (let i = 0; i < maxOptions && i < options.length; i++) {
-      this.appendChild(AppTileElement.create(options[i]));
+      this.appendChild(AppTile.create(options[i]));
     }
     if (options.length > maxOptions) {
       const extra = options.length - maxOptions;
@@ -48,8 +48,8 @@ export class AppDrawerOptionsElement extends HTMLElement {
   }
 
   onMouseDown(e: MouseEvent): void {
-    if (e.target instanceof AppTileElement) {
-      assert(this.parentElement instanceof AppDrawerElement);
+    if (e.target instanceof AppTile) {
+      assert(this.parentElement instanceof AppDrawer);
       this.parentElement.adoptTile(e);
       e.preventDefault();
     }

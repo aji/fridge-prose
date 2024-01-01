@@ -1,6 +1,6 @@
-import './AppModalElement.css';
+import './AppModal.css';
 
-export class AppModalElement extends HTMLElement {
+export class AppModal extends HTMLElement {
   static name = 'app-modal';
 
   constructor() {
@@ -9,7 +9,7 @@ export class AppModalElement extends HTMLElement {
   }
 
   static register() {
-    customElements.define(AppModalElement.name, AppModalElement);
+    customElements.define(AppModal.name, AppModal);
   }
 
   show(): void {

@@ -1,5 +1,5 @@
 import './AppMenu.css';
-import { AppModalElement } from './AppModalElement.ts';
+import { AppModal } from './AppModal.ts';
 import { assert, expected } from './utils.ts';
 
 export class AppMenu extends HTMLElement {
@@ -20,7 +20,7 @@ export class AppMenu extends HTMLElement {
         case 'modal': {
           const targetID = expected(e.target.getAttribute('data-target'));
           const target = expected(document.getElementById(targetID));
-          assert(target instanceof AppModalElement);
+          assert(target instanceof AppModal);
           target.show();
         }
       }

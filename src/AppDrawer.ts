@@ -1,13 +1,13 @@
-import { AppBoardElement } from './AppBoardElement.ts';
-import { AppDrawerOptionsElement } from './AppDrawerOptionsElement.ts';
+import { AppBoard } from './AppBoard.ts';
+import { AppDrawerOptionsElement } from './AppDrawerOptions.ts';
 import { search } from './search.ts';
 import { assert } from './utils.ts';
-import './AppDrawerElement.css';
+import './AppDrawer.css';
 
-export class AppDrawerElement extends HTMLElement {
+export class AppDrawer extends HTMLElement {
   static name = 'app-drawer';
 
-  board: AppBoardElement | undefined;
+  board: AppBoard | undefined;
   options: HTMLElement;
   input: HTMLInputElement;
 
@@ -33,12 +33,12 @@ export class AppDrawerElement extends HTMLElement {
   }
 
   static register(): void {
-    customElements.define(AppDrawerElement.name, AppDrawerElement);
+    customElements.define(AppDrawer.name, AppDrawer);
   }
 
   boardChanged(next: string) {
     const elem = document.getElementById(next);
-    assert(elem !== null && elem instanceof AppBoardElement);
+    assert(elem !== null && elem instanceof AppBoard);
     this.board = elem;
   }
 

@@ -1,7 +1,7 @@
-import './AppBoardElement.css';
-import { AppBoardSelectionElement } from './AppBoardSelectionElement.ts';
+import './AppBoard.css';
+import { AppBoardSelection } from './AppBoardSelection.ts';
 import { AppSnapRule } from './AppSnapRule.ts';
-import { AppTileElement } from './AppTileElement.ts';
+import { AppTile } from './AppTile.ts';
 import { SnapResult, combineSnaps, gridSnap, segmentSnap } from './snapping.ts';
 import { assert, overlap } from './utils.ts';
 
@@ -9,15 +9,15 @@ const gridSize = 100;
 const snapMargin = 5;
 const nudgeBy = 5;
 
-export class AppBoardElement extends HTMLElement {
+export class AppBoard extends HTMLElement {
   static name = 'app-board';
 
-  dragTarget: AppTileElement | null;
+  dragTarget: AppTile | null;
   dragOffsetX: number;
   dragOffsetY: number;
 
-  selectionArea: AppBoardSelectionElement | null;
-  selectedTiles: AppTileElement[];
+  selectionArea: AppBoardSelection | null;
+  selectedTiles: AppTile[];
 
   gridX: number | null;
   gridY: number | null;
@@ -46,18 +46,18 @@ export class AppBoardElement extends HTMLElement {
   }
 
   static register(): void {
-    customElements.define(AppBoardElement.name, AppBoardElement);
+    customElements.define(AppBoard.name, AppBoard);
   }
 
-  createTile(message: string): AppTileElement {
-    const elem = AppTileElement.create(message);
+  createTile(message: string): AppTile {
+    const elem = AppTile.create(message);
     this.appendChild(elem);
     return elem;
   }
 
   adoptTile(e: MouseEvent): void {
     const elem = e.target;
-    assert(elem instanceof AppTileElement);
+    assert(elem instanceof AppTile);
     const { left, top } = elem.getBoundingClientRect();
     this.dragTarget = elem;
     this.dragOffsetX = left - e.clientX;
@@ -70,7 +70,7 @@ export class AppBoardElement extends HTMLElement {
   updateSelection(rect: DOMRect | null): void {
     this.selectedTiles = [];
     for (const child of this.children) {
-      if (child instanceof AppTileElement) {
+      if (child instanceof AppTile) {
         const selected =
           rect !== null && overlap(rect, child.getBoundingClientRect());
         child.setIsSelected(selected);
@@ -112,7 +112,7 @@ export class AppBoardElement extends HTMLElement {
     const res: DOMRect[] = [];
     for (const node of this.children) {
       if (
-        node instanceof AppTileElement &&
+        node instanceof AppTile &&
         !node.isSelected() &&
         node !== this.dragTarget
       ) {
@@ -211,7 +211,7 @@ export class AppBoardElement extends HTMLElement {
   }
 
   onMouseDown(e: MouseEvent): void {
-    if (e.target instanceof AppTileElement) {
+    if (e.target instanceof AppTile) {
       this.dragTarget = e.target;
       this.dragOffsetX = e.target.x - e.clientX;
       this.dragOffsetY = e.target.y - e.clientY;
@@ -220,7 +220,7 @@ export class AppBoardElement extends HTMLElement {
       e.preventDefault();
     }
     if (e.target === this && this.selectionArea === null) {
-      this.selectionArea = AppBoardSelectionElement.create();
+      this.selectionArea = AppBoardSelection.create();
       this.appendChild(this.selectionArea);
       this.selectionArea.startAt(e.clientX, e.clientY);
       if (document.activeElement instanceof HTMLInputElement) {
