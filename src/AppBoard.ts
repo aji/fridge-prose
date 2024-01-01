@@ -5,7 +5,7 @@ import { AppTile } from './AppTile.ts';
 import { SnapResult, combineSnaps, gridSnap, segmentSnap } from './snapping.ts';
 import { assert, overlap } from './utils.ts';
 
-const gridSize = 100;
+//const gridSize = 100;
 const snapMargin = 5;
 const nudgeBy = 5;
 
@@ -16,6 +16,8 @@ type Serialized = {
 
 export class AppBoard extends HTMLElement {
   static name = 'app-board';
+
+  panning: boolean;
 
   dragTarget: AppTile | null;
   dragOffsetX: number;
@@ -31,6 +33,8 @@ export class AppBoard extends HTMLElement {
 
   constructor() {
     super();
+
+    this.panning = false;
 
     this.dragTarget = null;
     this.dragOffsetX = 0;
@@ -209,7 +213,14 @@ export class AppBoard extends HTMLElement {
   }
 
   onMouseMove(e: MouseEvent): void {
-    if (this.dragTarget !== null) {
+    if (this.panning) {
+      for (const child of this.children) {
+        if (child instanceof AppTile) {
+          child.moveBy(e.movementX, e.movementY);
+        }
+      }
+      e.preventDefault();
+    } else if (this.dragTarget !== null) {
       const isSelected = this.dragTarget.isSelected();
       if (!isSelected) {
         // need to do this first because it affects snapping
@@ -239,23 +250,24 @@ export class AppBoard extends HTMLElement {
       } else {
         this.dragTarget.moveTo(snapX.result, snapY.result);
       }
-    }
-
-    if (this.selectionArea !== null) {
+    } else if (this.selectionArea !== null) {
       this.selectionArea.endAt(e.clientX, e.clientY);
     }
   }
 
   onMouseDown(e: MouseEvent): void {
-    if (e.target instanceof AppTile) {
+    if ((e.button === 0 && e.ctrlKey) || e.button === 1) {
+      this.panning = true;
+      this.classList.add('panning');
+      e.preventDefault();
+    } else if (e.target instanceof AppTile) {
       this.dragTarget = e.target;
       this.dragOffsetX = e.target.x - e.clientX;
       this.dragOffsetY = e.target.y - e.clientY;
       e.target.dragStart();
       e.target.raiseToTop();
       e.preventDefault();
-    }
-    if (e.target === this && this.selectionArea === null) {
+    } else if (e.target === this && this.selectionArea === null) {
       this.selectionArea = AppBoardSelection.create();
       this.appendChild(this.selectionArea);
       this.selectionArea.startAt(e.clientX, e.clientY);
@@ -267,6 +279,10 @@ export class AppBoard extends HTMLElement {
   }
 
   onMouseUp(): void {
+    if (this.panning) {
+      this.panning = false;
+      this.classList.remove('panning');
+    }
     if (this.dragTarget !== null) {
       this.dragTarget.dragEnd();
       this.dragTarget = null;
@@ -281,7 +297,8 @@ export class AppBoard extends HTMLElement {
 
   onKeyDown(e: KeyboardEvent): void {
     if (e.key === 'g') {
-      this.toggleGrid(gridSize, gridSize);
+      // disabled until I can get it working with panning
+      //this.toggleGrid(gridSize, gridSize);
     } else if (e.key === 'Delete' || e.key === 'Backspace') {
       this.selectedTiles.forEach((x) => x.remove());
       this.updateSelection(null);

@@ -23,3 +23,6 @@ app-board.grid {
       var(--color-background) 1px
     );
 }
+app-board.panning {
+  cursor: grabbing;
+}
